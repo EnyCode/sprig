@@ -540,9 +540,9 @@ let level = 0
 const levels = [
   map`
 ..........
-.......z1.
 ..........
-......23..
+..........
+..........
 ..........
 ..........
 ..........
@@ -564,6 +564,7 @@ let playerAnimate = 1
 let jump = 0
 let y = 0
 let gap = 15
+let difficulty = 1
 
 let gameOver = false
 let score = 0
@@ -730,6 +731,9 @@ function updateScore() {
   score += 1
   clearText()
   addText(("000" + score).slice(-5), { x: 14, y: 2, color: color`L` })
+  if (score % 125 == 0) {
+    difficulty += 0.25
+  }
 
   if (!gameOver) {
     setTimeout(updateScore, 150)
@@ -740,7 +744,7 @@ function gameLoop() {
   animateBirds()
   moveMap()
 
-  if (gap < 14 + Math.floor(Math.random() * 3)) {
+  if (gap < Math.max(((14 + Math.floor(Math.random() * 3)) / difficulty), 10)) {
     gap += 1
   } else {
     gap = 0
